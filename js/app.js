@@ -256,6 +256,10 @@ function showResults() {
     document.getElementById('final-score').textContent = `${score}/${quizData.length}`;
     document.getElementById('final-percent').textContent = `${percent}%`;
 
+    if (percent >= 60) {
+        launchCelebrationConfetti();
+    }
+
     const badgeContainer = document.getElementById('badge-container');
     const resultTitle = document.getElementById('result-title');
     const resultSubtitle = document.getElementById('result-subtitle');
@@ -317,4 +321,32 @@ function launchConfetti() {
         origin: { y: 0.6 },
         colors: ['#22c55e', '#16a34a', '#15803d']
     });
+}
+
+function launchCelebrationConfetti() {
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const colors = ['#22c55e', '#16a34a', '#0ea5e9', '#8b5cf6', '#ec4899', '#f59e0b'];
+
+    (function frame() {
+        confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0, y: 0.7 },
+            colors: colors
+        });
+        confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1, y: 0.7 },
+            colors: colors
+        });
+
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    })();
 }
