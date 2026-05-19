@@ -28,6 +28,7 @@ const feedbackIcon = document.getElementById('feedback-icon');
 
 const moonIcon = document.getElementById('moon-icon');
 const sunIcon = document.getElementById('sun-icon');
+const faviconLink = document.getElementById('favicon-link');
 
 startBtn.addEventListener('click', startQuiz);
 nextBtn.addEventListener('click', handleNextBtnAction);
@@ -59,12 +60,14 @@ function setDarkTheme() {
     document.body.classList.add('dark');
     moonIcon.classList.remove('hidden');
     sunIcon.classList.add('hidden');
+    faviconLink.setAttribute('href', 'img/favicon-dark.svg');
 }
 
 function setLightTheme() {
     document.body.classList.remove('dark');
     moonIcon.classList.add('hidden');
     sunIcon.classList.remove('hidden');
+    faviconLink.setAttribute('href', 'img/favicon.svg');
 }
 
 initTheme();
