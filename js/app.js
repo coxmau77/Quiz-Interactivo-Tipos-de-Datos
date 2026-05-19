@@ -171,6 +171,7 @@ function checkAnswer() {
     if (selectedOption.isCorrect) {
         score++;
         scoreCounter.textContent = score;
+        launchConfetti();
         feedbackCard.classList.remove('incorrect');
         feedbackCard.classList.add('correct');
         feedbackTitle.textContent = "¡Correcto!";
@@ -247,6 +248,7 @@ function showResults() {
 }
 
 function restartQuiz() {
+    shuffleQuiz();
     currentQuestionIdx = 0;
     score = 0;
     scoreCounter.textContent = "0";
@@ -257,10 +259,37 @@ function restartQuiz() {
     loadQuestion();
 }
 
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+function shuffleQuiz() {
+    const shuffledQuestions = shuffleArray(quizData);
+    shuffledQuestions.forEach(question => {
+        question.options = shuffleArray(question.options);
+    });
+    quizData.length = 0;
+    quizData.push(...shuffledQuestions);
+}
+
 function toggleHint() {
     hintBox.classList.toggle('show');
 }
 
 function getLetter(idx) {
     return String.fromCharCode(65 + idx);
+}
+
+function launchConfetti() {
+    confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#22c55e', '#16a34a', '#15803d']
+    });
 }
