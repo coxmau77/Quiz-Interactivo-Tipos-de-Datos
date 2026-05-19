@@ -4,25 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz: Tipos de Datos en Pseudocódigo</title>
-    <!-- Tailwind CSS para diseño rápido y moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts para una tipografía limpia (Inter) -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .option-transition {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 selection:bg-indigo-500 selection:text-white">
 
-    <!-- Contenedor Principal de la App -->
     <div class="w-full max-w-2xl bg-slate-800/50 backdrop-blur-md border border-slate-700/50 rounded-3xl shadow-2xl overflow-hidden">
         
-        <!-- Cabecera del Quiz -->
         <div class="px-6 py-5 border-b border-slate-700/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="p-2.5 bg-indigo-500/10 rounded-xl text-indigo-400">
@@ -36,7 +25,6 @@
                 </div>
             </div>
             
-            <!-- Barra de Puntuación Rápida -->
             <div class="flex items-center gap-3 bg-slate-800 p-2 rounded-xl border border-slate-700/40 text-sm self-start sm:self-auto">
                 <div class="flex items-center gap-1.5 px-2 py-0.5 text-emerald-400 font-semibold">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -45,12 +33,10 @@
             </div>
         </div>
 
-        <!-- Barra de Progreso Superior -->
         <div class="w-full bg-slate-700/30 h-2">
             <div id="progress-bar" class="bg-indigo-500 h-2 w-0 transition-all duration-300 ease-out"></div>
         </div>
 
-        <!-- Pantalla de Bienvenida / Inicio -->
         <div id="welcome-screen" class="p-8 text-center">
             <div class="w-20 h-20 bg-indigo-500/10 text-indigo-400 rounded-3xl flex items-center justify-center mx-auto mb-6">
                 <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -66,9 +52,7 @@
             </button>
         </div>
 
-        <!-- Cuerpo del Cuestionario -->
         <div id="quiz-screen" class="p-6 sm:p-8 hidden">
-            <!-- Indicador de Pregunta actual -->
             <div class="flex items-center justify-between mb-4">
                 <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full" id="question-indicator">
                     Pregunta 1 de 10
@@ -81,7 +65,6 @@
                 </button>
             </div>
 
-            <!-- Recuadro de Pista (Inicia Oculto) -->
             <div id="hint-box" class="mb-5 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl hidden transition-all">
                 <div class="flex gap-2.5">
                     <div class="text-amber-400 mt-0.5">
@@ -96,21 +79,15 @@
                 </div>
             </div>
 
-            <!-- Texto de la Pregunta -->
             <h3 id="question-text" class="text-base sm:text-lg font-bold text-white mb-6 leading-snug">
-                <!-- Se inyecta con JS -->
             </h3>
 
-            <!-- Opciones de Respuesta -->
             <div id="options-container" class="space-y-3.5 mb-6">
-                <!-- Se inyectan con JS -->
             </div>
 
-            <!-- Bloque de Retroalimentación de Respuesta (Oculto al inicio) -->
             <div id="feedback-card" class="mb-6 p-4 rounded-2xl border hidden transition-all">
                 <div class="flex gap-3">
                     <div id="feedback-icon" class="mt-0.5 flex-shrink-0">
-                        <!-- Icono dinámico -->
                     </div>
                     <div>
                         <h4 id="feedback-title" class="text-sm font-bold uppercase tracking-wider"></h4>
@@ -119,7 +96,6 @@
                 </div>
             </div>
 
-            <!-- Acciones inferiores -->
             <div class="flex justify-end border-t border-slate-700/50 pt-5">
                 <button id="next-btn" class="w-full sm:w-auto px-6 py-3 bg-indigo-500 hover:bg-indigo-600 disabled:bg-slate-700 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-semibold rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all text-sm" disabled>
                     <span>Comprobar respuesta</span>
@@ -130,16 +106,13 @@
             </div>
         </div>
 
-        <!-- Pantalla de Resultados Finales -->
         <div id="result-screen" class="p-8 text-center hidden">
             <div id="badge-container" class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                <!-- Icono de logro dinámico -->
             </div>
             
             <h2 id="result-title" class="text-2xl font-extrabold text-white mb-2"></h2>
             <p id="result-subtitle" class="text-slate-400 max-w-sm mx-auto text-sm sm:text-base mb-6"></p>
 
-            <!-- Grid de estadísticas -->
             <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-8">
                 <div class="bg-slate-800/80 border border-slate-700/50 p-4 rounded-2xl">
                     <span class="text-xs font-semibold text-slate-400 uppercase block tracking-wider mb-1">Puntuación</span>
@@ -151,7 +124,6 @@
                 </div>
             </div>
 
-            <!-- Botones de Acción final -->
             <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
                 <button id="restart-btn" class="flex-1 px-6 py-3.5 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-2xl active:scale-95 transition-all text-sm flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -164,364 +136,7 @@
 
     </div>
 
-    <!-- Script de lógica de la aplicación -->
-    <script>
-        // Set de Datos del Quiz
-        const quizData = [
-            {
-                question: "Si estás escribiendo pseudocódigo y necesitas representar el valor numérico -150, ¿qué tipo de dato básico debes elegir?",
-                hint: "Piensa en si el número contiene una parte fraccionaria o decimal, o si es un número entero cerrado.",
-                options: [
-                    { text: "INTEGER (Entero)", isCorrect: true, rationale: "Este tipo de dato está diseñado específicamente para representar números enteros completos, tanto positivos como negativos, sin decimales." },
-                    { text: "REAL (Real)", isCorrect: false, rationale: "Aunque puede representar enteros si se escribe como -150.0, el tipo de dato más óptimo y exacto para un número sin decimales es el entero." },
-                    { text: "STRING (Cadena)", isCorrect: false, rationale: "Un número suelto sin comillas se procesa como un valor numérico directo, no como una cadena de texto." },
-                    { text: "BOOLEAN (Booleano)", isCorrect: false, rationale: "Los booleanos solo admiten valores lógicos de verdadero o falso, no valores numéricos numéricos escalares." }
-                ]
-            },
-            {
-                question: "¿Cuál de los siguientes valores representa adecuadamente un dato de tipo REAL en pseudocódigo?",
-                hint: "Busca un valor que use notación de punto decimal directamente sin estar envuelto en comillas.",
-                options: [
-                    { text: "15", isCorrect: false, rationale: "Este valor no posee parte decimal, por lo que es clasificado como un entero." },
-                    { text: "0.0", isCorrect: true, rationale: "Al incluir el punto decimal, le indica al sistema que contiene una parte fraccionaria, clasificándose como un número real." },
-                    { text: '\"20.49\"', isCorrect: false, rationale: "Aunque contiene un número con decimales, la presencia de las comillas dobles lo convierte automáticamente en una cadena de texto (STRING)." },
-                    { text: "'x'", isCorrect: false, rationale: "Este valor está delimitado por comillas simples y contiene un solo carácter alfabético, por lo que es de tipo CHAR." }
-                ]
-            },
-            {
-                question: "Si declaras la variable letra = 'g', ¿de qué tipo de dato básico se trata?",
-                hint: "Fíjate en la cantidad de caracteres que se están almacenando dentro de las comillas.",
-                options: [
-                    { text: "CHAR (Carácter)", isCorrect: true, rationale: "Representa un único símbolo, letra o número delimitado por comillas simples o dobles." },
-                    { text: "STRING (Cadena de texto)", isCorrect: false, rationale: "Aunque una cadena puede contener un solo carácter, el tipo más específico y elemental para un solo componente delimitado es el carácter." },
-                    { text: "BOOLEAN (Booleano)", isCorrect: false, rationale: "Este tipo de dato se limita únicamente a representar estados de verdadero o falso." },
-                    { text: "REAL (Real)", isCorrect: false, rationale: "Los tipos reales solo almacenan valores numéricos con coma flotante, no texto ni símbolos." }
-                ]
-            },
-            {
-                question: "¿Qué tipo de dato almacena únicamente los valores lógicos TRUE (Verdadero) y FALSE (Falso)?",
-                hint: "Este tipo de dato lleva el nombre del matemático George Boole.",
-                options: [
-                    { text: "BOOLEAN (Booleano)", isCorrect: true, rationale: "Es el tipo de dato lógico por excelencia, diseñado para representar operaciones de álgebra de Boole con solo dos estados posibles." },
-                    { text: "CHAR (Carácter)", isCorrect: false, rationale: "Un carácter puede almacenar letras como 'T' o 'F', pero no representa el valor lógico directo en sí mismo." },
-                    { text: "REAL (Real)", isCorrect: false, rationale: "Los números reales se usan para magnitudes cuantitativas con decimales, no para estados de veracidad lógico." },
-                    { text: "INTEGER (Entero)", isCorrect: false, rationale: "Aunque en sistemas antiguos se use 0 y 1, el tipo de dato específico y semántico para lógica en pseudocódigo moderno es el booleano." }
-                ]
-            },
-            {
-                question: "El valor \"Hola Mundo\" está delimitado por comillas dobles y contiene una secuencia de caracteres. ¿Qué tipo de dato es?",
-                hint: "Se trata de un conjunto o 'cadena' de elementos alfanuméricos agrupados.",
-                options: [
-                    { text: "STRING (Cadena de texto)", isCorrect: true, rationale: "Representa una secuencia de cero o más caracteres combinados (letras, espacios, símbolos) encerrados entre comillas." },
-                    { text: "CHAR (Carácter)", isCorrect: false, rationale: "Este tipo solo puede almacenar un único carácter, mientras que aquí tenemos una secuencia entera." },
-                    { text: "Text / Alphanumeric", isCorrect: false, rationale: "Aunque es un equivalente conceptual, este término se reserva específicamente para el modelado de bases de datos, no como tipo básico en pseudocódigo estándar." },
-                    { text: "BOOLEAN (Booleano)", isCorrect: false, rationale: "No representa una condición lógica de verdadero o falso, sino un texto libre." }
-                ]
-            },
-            {
-                question: "En el diseño de bases de datos, ¿cuál es el tipo de dato análogo o equivalente al STRING de la programación?",
-                hint: "Busca el término que denota que se pueden combinar letras y números para formar un bloque de texto en una tabla de datos.",
-                options: [
-                    { text: "Text / Alphanumeric (Texto / Alfanumérico)", isCorrect: true, rationale: "En base de datos, este tipo cumple la misma función que el STRING en programación, permitiendo guardar secuencias de letras y números tratadas como texto." },
-                    { text: "Date/time", isCorrect: false, rationale: "Este tipo se utiliza de forma exclusiva para marcas de tiempo y fechas, no para texto genérico." },
-                    { text: "CHAR (Carácter)", isCorrect: false, rationale: "El tipo CHAR en programación sigue representando un solo carácter, mientras que STRING es dinámico y equivalente al bloque de texto alfanumérico." },
-                    { text: "INTEGER (Entero)", isCorrect: false, rationale: "Los enteros en bases de datos siguen usándose para cálculos matemáticos exactos, no para texto." }
-                ]
-            },
-            {
-                question: "Si necesitas almacenar el valor \"123\" (con comillas), ¿por qué se considera de tipo STRING y no INTEGER?",
-                hint: "Presta atención al papel que juegan los delimitadores visuales (comillas) al definir datos en pseudocódigo.",
-                options: [
-                    { text: "Porque las comillas indican que es una secuencia de caracteres tratada como texto.", isCorrect: true, rationale: "Cualquier información envuelta en comillas pierde sus propiedades matemáticas directas y pasa a ser tratada como texto plano por el intérprete." },
-                    { text: "Porque contiene tres dígitos numéricos seguidos.", isCorrect: false, rationale: "Los dígitos numéricos pueden pertenecer tanto a enteros como a cadenas; la distinción radica en la sintaxis de delimitación." },
-                    { text: "Porque los números dentro de comillas se convierten automáticamente a reales.", isCorrect: false, rationale: "Las comillas no convierten el dato a real, de hecho impiden que se procese como cualquier tipo numérico directo sin una conversión explícita." },
-                    { text: "Porque es un dato lógico que depende de una condición.", isCorrect: false, rationale: "Los datos lógicos únicamente corresponden a verdadero o falso, y no se representan con secuencias de dígitos encerradas en comillas." }
-                ]
-            },
-            {
-                question: "En una base de datos, ¿bajo qué tipo de dato específico se guardaría de forma óptima el registro 15/05/2026 14:30?",
-                hint: "Identifica cuál de las opciones se enfoca explícitamente en el registro cronológico (días, horas, minutos).",
-                options: [
-                    { text: "Date/time (Fecha/hora)", isCorrect: true, rationale: "Es el tipo de dato nativo estructurado para almacenar de manera unificada instantes temporales concretos con día, mes, año y hora." },
-                    { text: "Text / Alphanumeric", isCorrect: false, rationale: "Aunque se podría guardar como texto, se perderían las funciones nativas de ordenación cronológica y operaciones temporales que ofrece el tipo específico." },
-                    { text: "REAL (Real)", isCorrect: false, rationale: "Los números reales almacenan magnitudes de punto decimal y no cuentan con estructura interna para interpretar formatos de calendario." },
-                    { text: "STRING (Cadena de texto)", isCorrect: false, rationale: "STRING es un concepto de lenguaje de programación general; las bases de datos utilizan tipos más especializados para optimizar las consultas de calendario." }
-                ]
-            },
-            {
-                question: "¿Cuál de las siguientes afirmaciones describe la diferencia fundamental entre un REAL y un INTEGER en pseudocódigo?",
-                hint: "Piensa en qué tipo de números puedes representar con enteros y cuáles requieren precisión fraccionaria (como una división).",
-                options: [
-                    { text: "El tipo REAL permite almacenar una parte fraccionaria o puntos decimales, mientras que el INTEGER no.", isCorrect: true, rationale: "Esta es la distinción matemática y de almacenamiento clave entre ambos tipos de datos numéricos en computación." },
-                    { text: "El tipo REAL solo puede almacenar números positivos.", isCorrect: false, rationale: "Ambos tipos de datos (tanto REAL como INTEGER) admiten perfectamente valores negativos y positivos." },
-                    { text: "El tipo INTEGER requiere el uso de comillas simples para ser definido.", isCorrect: false, rationale: "Los tipos numéricos nunca llevan comillas; si las llevaran, se transformarían en datos de tipo texto." },
-                    { text: "El tipo INTEGER se conoce en bases de datos como single o double.", isCorrect: false, rationale: "Los términos 'single' o 'double' hacen referencia a variaciones de precisión para números de tipo REAL." }
-                ]
-            },
-            {
-                question: "En el modelado de bases de datos, el código de inventario \"2JK8D\" se clasifica como Alfanumérico. ¿Por qué no es posible realizar operaciones aritméticas directas (como una suma) con este valor?",
-                hint: "Considera qué sucede cuando mezclas letras con números bajo un formato destinado a la lectura textual.",
-                options: [
-                    { text: "Porque es tratado puramente como texto por el sistema, inhabilitando las propiedades matemáticas de sus caracteres numéricos.", isCorrect: true, rationale: "Al ser alfanumérico, los caracteres numéricos dentro de la cadena no tienen valor cuantitativo; son solo grafemas de texto." },
-                    { text: "Porque contiene más de un número entero en su secuencia.", isCorrect: false, rationale: "El problema no es la cantidad de números, sino que la presencia de letras y el formato de texto impiden la interpretación aritmética." },
-                    { text: "Porque las bases de datos no permiten hacer sumas a menos que todos los campos sean de tipo Date/time.", isCorrect: false, rationale: "Las sumas se realizan sobre campos numéricos (como INTEGER o REAL), mientras que Date/time calcula intervalos temporales." },
-                    { text: "Porque requiere convertirse obligatoriamente a un tipo lógico booleano antes de procesarse.", isCorrect: false, rationale: "Los tipos lógicos solo devuelven verdadero/falso y no se utilizan para cálculos matemáticos con códigos de inventario." }
-                ]
-            }
-        ];
-
-        // Estado de la Aplicación
-        let currentQuestionIdx = 0;
-        let score = 0;
-        let selectedOptionIdx = null;
-        let isSubmitted = false;
-
-        // Selectores de Elementos del DOM
-        const welcomeScreen = document.getElementById('welcome-screen');
-        const quizScreen = document.getElementById('quiz-screen');
-        const resultScreen = document.getElementById('result-screen');
-        
-        const startBtn = document.getElementById('start-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        const hintBtn = document.getElementById('hint-btn');
-        const hintBox = document.getElementById('hint-box');
-        const hintText = document.getElementById('hint-text');
-
-        const questionIndicator = document.getElementById('question-indicator');
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const scoreCounter = document.getElementById('score-counter');
-        const progressBar = document.getElementById('progress-bar');
-
-        const feedbackCard = document.getElementById('feedback-card');
-        const feedbackTitle = document.getElementById('feedback-title');
-        const feedbackText = document.getElementById('feedback-text');
-        const feedbackIcon = document.getElementById('feedback-icon');
-
-        // Manejadores de Eventos de Navegación
-        startBtn.addEventListener('click', startQuiz);
-        nextBtn.addEventListener('click', handleNextBtnAction);
-        restartBtn.addEventListener('click', restartQuiz);
-        hintBtn.addEventListener('click', toggleHint);
-
-        // Inicializar o Comenzar el Quiz
-        function startQuiz() {
-            welcomeScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            loadQuestion();
-        }
-
-        // Cargar una Pregunta
-        function loadQuestion() {
-            isSubmitted = false;
-            selectedOptionIdx = null;
-            hintBox.classList.add('hidden');
-            feedbackCard.classList.add('hidden');
-
-            const currentQuestion = quizData[currentQuestionIdx];
-
-            // UI de progreso
-            questionIndicator.textContent = `Pregunta ${currentQuestionIdx + 1} de ${quizData.length}`;
-            questionText.textContent = currentQuestion.question;
-            hintText.textContent = currentQuestion.hint;
-            
-            // Render de opciones
-            optionsContainer.innerHTML = '';
-            currentQuestion.options.forEach((option, idx) => {
-                const button = document.createElement('button');
-                button.className = `w-full text-left p-4 rounded-2xl border border-slate-700 bg-slate-800/40 hover:bg-slate-700/50 hover:border-slate-600 focus:outline-none option-transition flex items-start gap-3.5 group`;
-                button.innerHTML = `
-                    <span class="w-6 h-6 flex-shrink-0 bg-slate-700 text-slate-300 font-bold rounded-lg text-xs flex items-center justify-center border border-slate-600 group-hover:bg-slate-600 group-hover:text-slate-200 option-transition">${getLetter(idx)}</span>
-                    <span class="text-slate-300 group-hover:text-slate-100 text-sm sm:text-base font-medium">${option.text}</span>
-                `;
-                button.addEventListener('click', () => selectOption(idx, button));
-                optionsContainer.appendChild(button);
-            });
-
-            // Actualizar Botón de Acción Principal
-            nextBtn.disabled = true;
-            nextBtn.innerHTML = `
-                <span>Comprobar respuesta</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                </svg>
-            `;
-
-            // Actualizar barra de progreso
-            const progressPercent = ((currentQuestionIdx) / quizData.length) * 100;
-            progressBar.style.width = `${progressPercent}%`;
-        }
-
-        // Seleccionar una Opción
-        function selectOption(idx, optionButton) {
-            if (isSubmitted) return;
-
-            selectedOptionIdx = idx;
-            nextBtn.disabled = false;
-
-            // Reiniciar estilos de los botones
-            const buttons = optionsContainer.querySelectorAll('button');
-            buttons.forEach((btn, i) => {
-                const indicator = btn.querySelector('span');
-                if (i === idx) {
-                    btn.className = `w-full text-left p-4 rounded-2xl border-2 border-indigo-500 bg-indigo-500/10 focus:outline-none option-transition flex items-start gap-3.5`;
-                    indicator.className = `w-6 h-6 flex-shrink-0 bg-indigo-500 text-white font-bold rounded-lg text-xs flex items-center justify-center`;
-                } else {
-                    btn.className = `w-full text-left p-4 rounded-2xl border border-slate-700 bg-slate-800/40 hover:bg-slate-700/50 hover:border-slate-600 focus:outline-none option-transition flex items-start gap-3.5 group`;
-                    indicator.className = `w-6 h-6 flex-shrink-0 bg-slate-700 text-slate-300 font-bold rounded-lg text-xs flex items-center justify-center border border-slate-600 group-hover:bg-slate-600 group-hover:text-slate-200 option-transition`;
-                }
-            });
-        }
-
-        // Comprobar Respuesta o Siguiente
-        function handleNextBtnAction() {
-            if (!isSubmitted) {
-                checkAnswer();
-            } else {
-                currentQuestionIdx++;
-                if (currentQuestionIdx < quizData.length) {
-                    loadQuestion();
-                } else {
-                    showResults();
-                }
-            }
-        }
-
-        // Evaluar la Opción elegida
-        function checkAnswer() {
-            isSubmitted = true;
-            const currentQuestion = quizData[currentQuestionIdx];
-            const selectedOption = currentQuestion.options[selectedOptionIdx];
-            
-            // Deshabilitar clicks en todas las opciones
-            const buttons = optionsContainer.querySelectorAll('button');
-            buttons.forEach(btn => btn.disabled = true);
-
-            // Resaltar Correcta / Incorrecta
-            buttons.forEach((btn, i) => {
-                const isCorrectOption = currentQuestion.options[i].isCorrect;
-                const isSelected = i === selectedOptionIdx;
-                const indicator = btn.querySelector('span');
-
-                if (isCorrectOption) {
-                    btn.className = `w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 focus:outline-none option-transition flex items-start gap-3.5`;
-                    indicator.className = `w-6 h-6 flex-shrink-0 bg-emerald-500 text-white font-bold rounded-lg text-xs flex items-center justify-center`;
-                } else if (isSelected && !isCorrectOption) {
-                    btn.className = `w-full text-left p-4 rounded-2xl border-2 border-rose-500 bg-rose-500/15 focus:outline-none option-transition flex items-start gap-3.5`;
-                    indicator.className = `w-6 h-6 flex-shrink-0 bg-rose-500 text-white font-bold rounded-lg text-xs flex items-center justify-center`;
-                } else {
-                    btn.className = `w-full text-left p-4 rounded-2xl border border-slate-800 bg-slate-800/20 opacity-40 focus:outline-none option-transition flex items-start gap-3.5`;
-                    indicator.className = `w-6 h-6 flex-shrink-0 bg-slate-800 text-slate-600 font-bold rounded-lg text-xs flex items-center justify-center border border-slate-700`;
-                }
-            });
-
-            // Mostrar el bloque de feedback explicativo
-            feedbackCard.classList.remove('hidden');
-            if (selectedOption.isCorrect) {
-                score++;
-                scoreCounter.textContent = score;
-                feedbackCard.className = "mb-6 p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 flex gap-3";
-                feedbackTitle.className = "text-sm font-bold uppercase tracking-wider text-emerald-400";
-                feedbackTitle.textContent = "¡Correcto!";
-                feedbackIcon.innerHTML = `
-                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                `;
-            } else {
-                feedbackCard.className = "mb-6 p-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 flex gap-3";
-                feedbackTitle.className = "text-sm font-bold uppercase tracking-wider text-rose-400";
-                feedbackTitle.textContent = "Incorrecto";
-                feedbackIcon.innerHTML = `
-                    <div class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </div>
-                `;
-            }
-            feedbackText.textContent = selectedOption.rationale;
-
-            // Cambiar texto de botón para avanzar
-            const isLast = currentQuestionIdx === quizData.length - 1;
-            nextBtn.innerHTML = `
-                <span>${isLast ? "Ver Resultados" : "Siguiente pregunta"}</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            `;
-        }
-
-        // Mostrar pantalla de resultados
-        function showResults() {
-            quizScreen.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-
-            // Actualizar barra de progreso al 100%
-            progressBar.style.width = `100%`;
-
-            // Calcular porcentajes
-            const percent = Math.round((score / quizData.length) * 100);
-            document.getElementById('final-score').textContent = `${score}/${quizData.length}`;
-            document.getElementById('final-percent').textContent = `${percent}%`;
-
-            // Personalización de feedbacks según desempeño
-            const badgeContainer = document.getElementById('badge-container');
-            const resultTitle = document.getElementById('result-title');
-            const resultSubtitle = document.getElementById('result-subtitle');
-
-            if (percent === 100) {
-                badgeContainer.className = "w-24 h-24 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto mb-6 border-2 border-amber-500/20 animate-bounce";
-                badgeContainer.innerHTML = `
-                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
-                `;
-                resultTitle.textContent = "🏆 ¡Perfecto! Maestro de Datos";
-                resultSubtitle.textContent = "Has contestado de forma impecable. Ya dominas a la perfección cómo asignar e interpretar tipos de datos en pseudocódigo.";
-            } else if (percent >= 70) {
-                badgeContainer.className = "w-24 h-24 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-6 border-2 border-emerald-500/20";
-                badgeContainer.innerHTML = `
-                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                `;
-                resultTitle.textContent = "🎉 ¡Excelente trabajo!";
-                resultSubtitle.textContent = "Tienes un entendimiento muy sólido sobre los tipos de datos lógicos, numéricos y textuales. ¡Sigue así!";
-            } else {
-                badgeContainer.className = "w-24 h-24 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto mb-6 border-2 border-rose-500/20";
-                badgeContainer.innerHTML = `
-                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                    </svg>
-                `;
-                resultTitle.textContent = "💡 Buen intento";
-                resultSubtitle.textContent = "Es un gran comienzo, pero te recomendamos revisar las explicaciones y volver a intentarlo para reforzar tus habilidades algorítmicas.";
-            }
-        }
-
-        // Reiniciar el Quiz
-        function restartQuiz() {
-            currentQuestionIdx = 0;
-            score = 0;
-            scoreCounter.textContent = "0";
-            resultScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
-            loadQuestion();
-        }
-
-        // Activar/Ocultar Pistas
-        function toggleHint() {
-            hintBox.classList.toggle('hidden');
-        }
-
-        // Helper para convertir índices en Letras A, B, C, D
-        function getLetter(idx) {
-            return String.fromCharCode(65 + idx); // 65 es 'A' en ASCII
-        }
-    </script>
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
