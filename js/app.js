@@ -13,6 +13,7 @@ const restartBtn = document.getElementById('restart-btn');
 const hintBtn = document.getElementById('hint-btn');
 const hintBox = document.getElementById('hint-box');
 const hintText = document.getElementById('hint-text');
+const themeToggle = document.getElementById('theme-toggle');
 
 const questionIndicator = document.getElementById('question-indicator');
 const questionText = document.getElementById('question-text');
@@ -25,10 +26,48 @@ const feedbackTitle = document.getElementById('feedback-title');
 const feedbackText = document.getElementById('feedback-text');
 const feedbackIcon = document.getElementById('feedback-icon');
 
+const moonIcon = document.getElementById('moon-icon');
+const sunIcon = document.getElementById('sun-icon');
+
 startBtn.addEventListener('click', startQuiz);
 nextBtn.addEventListener('click', handleNextBtnAction);
 restartBtn.addEventListener('click', restartQuiz);
 hintBtn.addEventListener('click', toggleHint);
+themeToggle.addEventListener('click', toggleTheme);
+
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        setLightTheme();
+    } else {
+        setDarkTheme();
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.body.classList.contains('dark');
+    if (isDark) {
+        setLightTheme();
+        localStorage.setItem('theme', 'light');
+    } else {
+        setDarkTheme();
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+function setDarkTheme() {
+    document.body.classList.add('dark');
+    moonIcon.classList.remove('hidden');
+    sunIcon.classList.add('hidden');
+}
+
+function setLightTheme() {
+    document.body.classList.remove('dark');
+    moonIcon.classList.add('hidden');
+    sunIcon.classList.remove('hidden');
+}
+
+initTheme();
 
 function startQuiz() {
     welcomeScreen.classList.add('hidden');
@@ -51,10 +90,10 @@ function loadQuestion() {
     optionsContainer.innerHTML = '';
     currentQuestion.options.forEach((option, idx) => {
         const button = document.createElement('button');
-        button.className = `w-full text-left p-4 rounded-2xl border border-slate-700 bg-slate-800/40 hover:bg-slate-700/50 hover:border-slate-600 focus:outline-none option-transition flex items-start gap-3.5 group`;
+        button.className = `w-full text-left p-4 sm:p-5 rounded-2xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800/40 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-400 dark:hover:border-slate-500 focus:outline-none option-transition flex items-start gap-3 sm:gap-4 group`;
         button.innerHTML = `
-            <span class="w-6 h-6 flex-shrink-0 bg-slate-700 text-slate-300 font-bold rounded-lg text-xs flex items-center justify-center border border-slate-600 group-hover:bg-slate-600 group-hover:text-slate-200 option-transition">${getLetter(idx)}</span>
-            <span class="text-slate-300 group-hover:text-slate-100 text-sm sm:text-base font-medium">${option.text}</span>
+            <span class="w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-lg text-sm sm:text-base flex items-center justify-center border border-slate-200 dark:border-slate-600 group-hover:bg-slate-200 dark:group-hover:bg-slate-600 group-hover:text-slate-700 dark:group-hover:text-slate-200 option-transition">${getLetter(idx)}</span>
+            <span class="text-slate-700 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-slate-100 text-base sm:text-lg font-medium">${option.text}</span>
         `;
         button.addEventListener('click', () => selectOption(idx, button));
         optionsContainer.appendChild(button);
@@ -82,11 +121,11 @@ function selectOption(idx, optionButton) {
     buttons.forEach((btn, i) => {
         const indicator = btn.querySelector('span');
         if (i === idx) {
-            btn.className = `w-full text-left p-4 rounded-2xl border-2 border-indigo-500 bg-indigo-500/10 focus:outline-none option-transition flex items-start gap-3.5`;
-            indicator.className = `w-6 h-6 flex-shrink-0 bg-indigo-500 text-white font-bold rounded-lg text-xs flex items-center justify-center`;
+            btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-indigo-500 bg-indigo-500/10 focus:outline-none option-transition flex items-start gap-3 sm:gap-4`;
+            indicator.className = `w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 bg-indigo-500 text-white font-bold rounded-lg text-sm sm:text-base flex items-center justify-center`;
         } else {
-            btn.className = `w-full text-left p-4 rounded-2xl border border-slate-700 bg-slate-800/40 hover:bg-slate-700/50 hover:border-slate-600 focus:outline-none option-transition flex items-start gap-3.5 group`;
-            indicator.className = `w-6 h-6 flex-shrink-0 bg-slate-700 text-slate-300 font-bold rounded-lg text-xs flex items-center justify-center border border-slate-600 group-hover:bg-slate-600 group-hover:text-slate-200 option-transition`;
+            btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800/40 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-400 dark:hover:border-slate-500 focus:outline-none option-transition flex items-start gap-3 sm:gap-4 group`;
+            indicator.className = `w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-lg text-sm sm:text-base flex items-center justify-center border border-slate-200 dark:border-slate-600 group-hover:bg-slate-200 dark:group-hover:bg-slate-600 group-hover:text-slate-700 dark:group-hover:text-slate-200 option-transition`;
         }
     });
 }
@@ -118,14 +157,14 @@ function checkAnswer() {
         const indicator = btn.querySelector('span');
 
         if (isCorrectOption) {
-            btn.className = `w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 focus:outline-none option-transition flex items-start gap-3.5`;
-            indicator.className = `w-6 h-6 flex-shrink-0 bg-emerald-500 text-white font-bold rounded-lg text-xs flex items-center justify-center`;
+            btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-emerald-500 bg-emerald-500/15 focus:outline-none option-transition flex items-start gap-3 sm:gap-4`;
+            indicator.className = `w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 bg-emerald-500 text-white font-bold rounded-lg text-sm sm:text-base flex items-center justify-center`;
         } else if (isSelected && !isCorrectOption) {
-            btn.className = `w-full text-left p-4 rounded-2xl border-2 border-rose-500 bg-rose-500/15 focus:outline-none option-transition flex items-start gap-3.5`;
-            indicator.className = `w-6 h-6 flex-shrink-0 bg-rose-500 text-white font-bold rounded-lg text-xs flex items-center justify-center`;
+            btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border-2 border-rose-500 bg-rose-500/15 focus:outline-none option-transition flex items-start gap-3 sm:gap-4`;
+            indicator.className = `w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 bg-rose-500 text-white font-bold rounded-lg text-sm sm:text-base flex items-center justify-center`;
         } else {
-            btn.className = `w-full text-left p-4 rounded-2xl border border-slate-800 bg-slate-800/20 opacity-40 focus:outline-none option-transition flex items-start gap-3.5`;
-            indicator.className = `w-6 h-6 flex-shrink-0 bg-slate-800 text-slate-600 font-bold rounded-lg text-xs flex items-center justify-center border border-slate-700`;
+            btn.className = `w-full text-left p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/20 opacity-40 focus:outline-none option-transition flex items-start gap-3 sm:gap-4`;
+            indicator.className = `w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 font-bold rounded-lg text-sm sm:text-base flex items-center justify-center border border-slate-200 dark:border-slate-700`;
         }
     });
 
@@ -133,22 +172,22 @@ function checkAnswer() {
     if (selectedOption.isCorrect) {
         score++;
         scoreCounter.textContent = score;
-        feedbackCard.className = "mb-6 p-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 flex gap-3";
-        feedbackTitle.className = "text-sm font-bold uppercase tracking-wider text-emerald-400";
+        feedbackCard.className = "mb-6 p-4 sm:p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 flex gap-3";
+        feedbackTitle.className = "text-sm sm:text-base font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400";
         feedbackTitle.textContent = "¡Correcto!";
         feedbackIcon.innerHTML = `
-            <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
         `;
     } else {
-        feedbackCard.className = "mb-6 p-4 rounded-2xl border border-rose-500/30 bg-rose-500/10 flex gap-3";
-        feedbackTitle.className = "text-sm font-bold uppercase tracking-wider text-rose-400";
+        feedbackCard.className = "mb-6 p-4 sm:p-5 rounded-2xl border border-rose-500/30 bg-rose-500/10 flex gap-3";
+        feedbackTitle.className = "text-sm sm:text-base font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400";
         feedbackTitle.textContent = "Incorrecto";
         feedbackIcon.innerHTML = `
-            <div class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center">
+            <div class="w-8 h-8 rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -180,28 +219,28 @@ function showResults() {
     const resultTitle = document.getElementById('result-title');
     const resultSubtitle = document.getElementById('result-subtitle');
 
-    if (percent === 100) {
-        badgeContainer.className = "w-24 h-24 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto mb-6 border-2 border-amber-500/20 animate-bounce";
+if (percent === 100) {
+        badgeContainer.className = "w-28 sm:w-32 h-28 sm:h-32 rounded-full bg-amber-500/10 text-amber-500 dark:text-amber-400 flex items-center justify-center mx-auto mb-6 sm:mb-8 border-2 border-amber-500/20 animate-bounce";
         badgeContainer.innerHTML = `
-            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-14 sm:w-16 h-14 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
             </svg>
         `;
         resultTitle.textContent = "🏆 ¡Perfecto! Maestro de Datos";
         resultSubtitle.textContent = "Has contestado de forma impeccable. Ya dominas a la perfección cómo asignar e interpretar tipos de datos en pseudocódigo.";
     } else if (percent >= 70) {
-        badgeContainer.className = "w-24 h-24 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-6 border-2 border-emerald-500/20";
+        badgeContainer.className = "w-28 sm:w-32 h-28 sm:h-32 rounded-full bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 flex items-center justify-center mx-auto mb-6 sm:mb-8 border-2 border-emerald-500/20";
         badgeContainer.innerHTML = `
-            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-14 sm:w-16 h-14 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
         `;
         resultTitle.textContent = "🎉 ¡Excelente trabajo!";
         resultSubtitle.textContent = "Tienes un entendimiento muy sólido sobre los tipos de datos lógicos, numéricos y textuales. ¡Sigue así!";
     } else {
-        badgeContainer.className = "w-24 h-24 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto mb-6 border-2 border-rose-500/20";
+        badgeContainer.className = "w-28 sm:w-32 h-28 sm:h-32 rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400 flex items-center justify-center mx-auto mb-6 sm:mb-8 border-2 border-rose-500/20";
         badgeContainer.innerHTML = `
-            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-14 sm:w-16 h-14 sm:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
             </svg>
         `;
