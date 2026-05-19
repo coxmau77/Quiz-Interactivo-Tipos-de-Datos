@@ -21,11 +21,6 @@ const optionsContainer = document.getElementById('options-container');
 const scoreCounter = document.getElementById('score-counter');
 const progressBar = document.getElementById('progress-bar');
 
-const feedbackCard = document.getElementById('feedback-card');
-const feedbackTitle = document.getElementById('feedback-title');
-const feedbackText = document.getElementById('feedback-text');
-const feedbackIcon = document.getElementById('feedback-icon');
-
 const moonIcon = document.getElementById('moon-icon');
 const sunIcon = document.getElementById('sun-icon');
 const faviconLink = document.getElementById('favicon-link');
@@ -104,7 +99,6 @@ function loadQuestion() {
     isSubmitted = false;
     selectedOptionIdx = null;
     hintBox.classList.remove('show');
-    feedbackCard.classList.remove('show');
 
     const currentQuestion = quizData[currentQuestionIdx];
 
@@ -114,14 +108,25 @@ function loadQuestion() {
 
     optionsContainer.innerHTML = '';
     currentQuestion.options.forEach((option, idx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'option-wrapper';
+
         const button = document.createElement('button');
         button.className = 'option';
+        button.dataset.idx = idx;
         button.innerHTML = `
             <span class="option-letter">${getLetter(idx)}</span>
             <span class="option-text">${option.text}</span>
         `;
         button.addEventListener('click', () => selectOption(idx, button));
-        optionsContainer.appendChild(button);
+
+        const feedback = document.createElement('div');
+        feedback.className = 'option-feedback';
+        feedback.dataset.idx = idx;
+
+        wrapper.appendChild(button);
+        wrapper.appendChild(feedback);
+        optionsContainer.appendChild(wrapper);
     });
 
     nextBtn.disabled = true;
@@ -170,47 +175,65 @@ function checkAnswer() {
     const selectedOption = currentQuestion.options[selectedOptionIdx];
 
     const buttons = optionsContainer.querySelectorAll('.option');
+    const feedbacks = optionsContainer.querySelectorAll('.option-feedback');
+
     buttons.forEach(btn => {
         btn.classList.add('disabled');
         btn.classList.remove('selected');
     });
 
-    buttons.forEach((btn, i) => {
-        const isCorrectOption = currentQuestion.options[i].isCorrect;
-        const isSelected = i === selectedOptionIdx;
-        const letterSpan = btn.querySelector('.option-letter');
-
-        if (isCorrectOption) {
-            btn.classList.add('correct');
-        } else if (isSelected && !isCorrectOption) {
-            btn.classList.add('incorrect');
-        }
-    });
-
-    feedbackCard.classList.add('show');
     if (selectedOption.isCorrect) {
         score++;
         scoreCounter.textContent = score;
         launchConfetti();
-        feedbackCard.classList.remove('incorrect');
-        feedbackCard.classList.add('correct');
-        feedbackTitle.textContent = "¡Correcto!";
-        feedbackIcon.innerHTML = `
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-            </svg>
-        `;
-    } else {
-        feedbackCard.classList.remove('correct');
-        feedbackCard.classList.add('incorrect');
-        feedbackTitle.textContent = "Incorrecto";
-        feedbackIcon.innerHTML = `
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        `;
     }
-    feedbackText.textContent = selectedOption.rationale;
+
+    buttons.forEach((btn, i) => {
+        const option = currentQuestion.options[i];
+        const isCorrect = option.isCorrect;
+        const isSelected = i === selectedOptionIdx;
+        const feedbackEl = feedbacks[i];
+
+        if (isCorrect) {
+            btn.classList.add('correct');
+        } else if (isSelected) {
+            btn.classList.add('incorrect');
+        }
+
+        feedbackEl.classList.add('show');
+        if (isCorrect) {
+            feedbackEl.classList.add('correct');
+            feedbackEl.classList.remove('incorrect');
+            feedbackEl.innerHTML = `
+                <div class="option-feedback-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <div class="option-feedback-content">
+                    <span>Respuesta correcta</span>
+                    <p>${option.rationale}</p>
+                </div>
+            `;
+        } else if (isSelected) {
+            feedbackEl.classList.add('incorrect');
+            feedbackEl.classList.remove('correct');
+            feedbackEl.innerHTML = `
+                <div class="option-feedback-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <div class="option-feedback-content">
+                    <span>Tu respuesta</span>
+                    <p>${option.rationale}</p>
+                </div>
+            `;
+        } else {
+            feedbackEl.innerHTML = '';
+            feedbackEl.classList.remove('correct', 'incorrect');
+        }
+    });
 
     const isLast = currentQuestionIdx === quizData.length - 1;
     nextBtn.innerHTML = `
