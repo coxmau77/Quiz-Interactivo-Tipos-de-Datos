@@ -30,6 +30,26 @@ const moonIcon = document.getElementById('moon-icon');
 const sunIcon = document.getElementById('sun-icon');
 const faviconLink = document.getElementById('favicon-link');
 
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
+
+function shuffleQuiz() {
+    const shuffledQuestions = shuffleArray(quizData);
+    shuffledQuestions.forEach(question => {
+        question.options = shuffleArray(question.options);
+    });
+    quizData.length = 0;
+    quizData.push(...shuffledQuestions);
+}
+
+shuffleQuiz();
+
 startBtn.addEventListener('click', startQuiz);
 nextBtn.addEventListener('click', handleNextBtnAction);
 restartBtn.addEventListener('click', restartQuiz);
@@ -257,24 +277,6 @@ function restartQuiz() {
     quizScreen.classList.remove('hidden');
     quizScreen.classList.add('active');
     loadQuestion();
-}
-
-function shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-}
-
-function shuffleQuiz() {
-    const shuffledQuestions = shuffleArray(quizData);
-    shuffledQuestions.forEach(question => {
-        question.options = shuffleArray(question.options);
-    });
-    quizData.length = 0;
-    quizData.push(...shuffledQuestions);
 }
 
 function toggleHint() {
